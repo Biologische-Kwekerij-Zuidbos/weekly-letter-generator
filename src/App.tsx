@@ -1,21 +1,9 @@
 import moment from "moment"
 import CopyButton from "./components/CopyButton"
+import { useMailHtml } from "./contexts/MailHtmlContext"
 
 function App() {
-  const year = new Date().getFullYear()
-  const week = moment().format("w")
-
-  const generatedHtmlCode = `
-  <html>
-    <head>
-      <title>Newsletter</title>
-    </head>
-    <body>
-      <h1>Newsletter</h1>
-      <p>Week ${week} of ${year}</p>
-    </body>
-  </html>
-  `
+  const { mailHtml, year, week } = useMailHtml()
 
   return (
     <div className="flex flex-row p-5 gap-5">
@@ -33,9 +21,9 @@ function App() {
             top: "0.5rem",
           }}
         >
-          <CopyButton text={generatedHtmlCode} />
+          <CopyButton text={mailHtml} />
         </div>
-        <pre className="pl-1">{generatedHtmlCode}</pre>
+        <pre className="pl-1">{mailHtml}</pre>
       </div>
     </div>
   )
