@@ -1,11 +1,12 @@
 import moment from "moment"
 import { createContext, useContext } from "react"
+import { WeeklyLetterForm } from "../components/Form"
 
 export type MailHtmlContextType = {
   mailHtml: string
   year: number
   week: number
-  setPackageItems: (items: string[]) => void
+  setValues: (values: WeeklyLetterForm) => void
 }
 
 const MailHtmlContext = createContext<MailHtmlContextType>({
@@ -13,7 +14,7 @@ const MailHtmlContext = createContext<MailHtmlContextType>({
   year: new Date().getFullYear(),
   week: moment().week(),
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setPackageItems: () => {},
+  setValues: () => {},
 })
 
 export const useMailHtml = () => useContext(MailHtmlContext)
