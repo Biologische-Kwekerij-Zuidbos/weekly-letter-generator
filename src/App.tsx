@@ -1,9 +1,7 @@
 import CopyButton from "./components/CopyButton"
 import Form from "./components/Form"
 import { useMailHtml } from "./contexts/MailHtmlContext"
-
 import "react-toastify/dist/ReactToastify.css"
-import { ToastContainer } from "react-toastify"
 
 function App() {
   const { mailHtml, year, week } = useMailHtml()
@@ -41,7 +39,6 @@ function App() {
           <pre className="p-6">{mailHtml}</pre>
         </div>
       </div>
-      <ToastContainer position="bottom-right" />
     </div>
   )
 }

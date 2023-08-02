@@ -1,12 +1,12 @@
 import moment from "moment"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import MailHtmlContext from "../contexts/MailHtmlContext"
 import { WeeklyLetterForm } from "../components/Form"
 import getHtmlFromLayout from "../util/layout"
 import letterLayoutString from "../assets/letter_layout.html?raw"
 import recipeLayoutString from "../assets/recipe_layout.html?raw"
 import { useAICompletions } from "../hooks/useAICompletion"
-import { toast } from "react-toastify"
+import { ToastContainer } from "react-toastify"
 
 type Recipe = {
   name: string
@@ -75,9 +75,18 @@ const MailHtmlProvider = ({ children }: MailHtmlProviderProps) => {
 
   const [values, setValues] = useState<WeeklyLetterForm>()
 
-  const packageItems = values?.packageLines.split("\n") ?? []
-  const offerItems = values?.offerLines.split("\n") ?? []
-  const recipeItems = values?.recipeLines.split("\n") ?? []
+  const packageItems = useMemo(
+    () => values?.packageLines.split("\n") ?? [],
+    [values]
+  )
+  const offerItems = useMemo(
+    () => values?.offerLines.split("\n") ?? [],
+    [values]
+  )
+  const recipeItems = useMemo(
+    () => values?.recipeLines.split("\n") ?? [],
+    [values]
+  )
 
   const recipesQueries = useAICompletions(
     recipeItems.map((item) => ({
@@ -90,28 +99,24 @@ const MailHtmlProvider = ({ children }: MailHtmlProviderProps) => {
     .filter((item) => item.error)
     .map((item) => item.error)
 
-  useEffect(() => {
-    errors.map((error) => {
-      toast(error as string)
-    })
-    console.log(errors)
-  }, [errors])
+  const recipes: Recipe[] = useMemo(
+    () =>
+      recipesQueries.map((item, index) => {
+        const ingredients = item.data?.data.choices[0].text
+        const name = recipeItems[index]
 
-  const recipes: Recipe[] = recipesQueries.map((item, index) => {
-    const ingredients = item.data?.data.choices[0].text
-    const name = recipeItems[index]
+        return {
+          name,
+          ingredients: ingredients?.split(", ") ?? [],
+          preparationSteps: [],
+        }
+      }),
+    [recipesQueries, recipeItems]
+  )
 
-    return {
-      name,
-      ingredients: ingredients?.split(", ") ?? [],
-      preparationSteps: [],
-    }
-  })
-
-  const mailHtml = getLetterHtml(
-    packageItems,
-    offerItems,
-    getRecipesHtml(recipes)
+  const mailHtml = useMemo(
+    () => getLetterHtml(packageItems, offerItems, getRecipesHtml(recipes)),
+    [packageItems, offerItems, recipes]
   )
 
   const value = useMemo(
@@ -129,6 +134,7 @@ const MailHtmlProvider = ({ children }: MailHtmlProviderProps) => {
   return (
     <MailHtmlContext.Provider value={value}>
       {children}
+      <ToastContainer position="bottom-right" theme="colored" />
     </MailHtmlContext.Provider>
   )
 }
