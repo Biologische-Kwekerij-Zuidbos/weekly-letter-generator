@@ -9,7 +9,7 @@ import recipeLayoutString from "../assets/recipe_layout.html?raw"
 const getRecipesHtml = (recipeItems: string[]): string => {
   return recipeItems
     .map((item) => {
-      getHtmlFromLayout(recipeLayoutString, [
+      return getHtmlFromLayout(recipeLayoutString, [
         {
           name: "RECIPE_NAME",
           value: item,
