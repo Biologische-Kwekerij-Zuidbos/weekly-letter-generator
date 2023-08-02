@@ -7,13 +7,24 @@ import letterLayoutString from "../assets/letter_layout.html?raw"
 import recipeLayoutString from "../assets/recipe_layout.html?raw"
 
 const getRecipesHtml = (recipeItems: string[]): string => {
-  const html = getHtmlFromLayout(recipeLayoutString, [
-    {
-      name: "RECIPES",
-      value: recipeItems.map((item) => `<li>${item}</li>\n`).join(""),
-    },
-  ])
-  return html
+  return recipeItems
+    .map((item) => {
+      getHtmlFromLayout(recipeLayoutString, [
+        {
+          name: "RECIPE_NAME",
+          value: item,
+        },
+        {
+          name: "RECIPE_INGREDIENTS",
+          value: "",
+        },
+        {
+          name: "RECIPE_PREPARATION_STEPS",
+          value: "",
+        },
+      ])
+    })
+    .join("\n")
 }
 
 const getLetterHtml = (
@@ -34,6 +45,10 @@ const getLetterHtml = (
       name: "RECIPES",
       value: recipesHtml,
     },
+    {
+      name: "ORDER_TIME",
+      value: "20:00",
+    },
   ])
   return html
 }
@@ -47,14 +62,15 @@ const MailHtmlProvider = ({ children }: MailHtmlProviderProps) => {
   const week = Number(moment().format("w"))
 
   const [values, setValues] = useState<WeeklyLetterForm>()
-  const packageItems = values?.packageLines.split("\n")
-  const offerItems = values?.offerLines.split("\n")
-  const recipeItems = values?.recipeLines.split("\n")
+
+  const packageItems = values?.packageLines.split("\n") ?? []
+  const offerItems = values?.offerLines.split("\n") ?? []
+  const recipeItems = values?.recipeLines.split("\n") ?? []
 
   const mailHtml = getLetterHtml(
-    packageItems ?? [],
-    offerItems ?? [],
-    getRecipesHtml(recipeItems ?? [])
+    packageItems,
+    offerItems,
+    getRecipesHtml(recipeItems)
   )
 
   const value = useMemo(
