@@ -9,3 +9,6 @@ insert_final_newline = true
 
 [*.{ts,tsx,js,jsx,css,scss}]
 indent_size = 2
+
+[*.txt]
+insert_final_newline = false
