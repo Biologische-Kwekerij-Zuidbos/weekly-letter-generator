@@ -5,7 +5,8 @@ export type OpenAIContextType = {
   api: OpenAIApi
 }
 
-const apiKey = import.meta.env.VITE_OPENAI_API_KEY as string
+const apiKey = import.meta.env.VITE_OPEN_AI_API_KEY as string
+console.log(apiKey)
 const configuration = new Configuration({
   apiKey,
 })

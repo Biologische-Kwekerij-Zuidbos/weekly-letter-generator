@@ -7,6 +7,8 @@ export type MailHtmlContextType = {
   year: number
   week: number
   setValues: (values: WeeklyLetterForm) => void
+  isLoading: boolean
+  errors: unknown[]
 }
 
 const MailHtmlContext = createContext<MailHtmlContextType>({
@@ -15,6 +17,8 @@ const MailHtmlContext = createContext<MailHtmlContextType>({
   week: moment().week(),
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setValues: () => {},
+  isLoading: false,
+  errors: [],
 })
 
 export const useMailHtml = () => useContext(MailHtmlContext)

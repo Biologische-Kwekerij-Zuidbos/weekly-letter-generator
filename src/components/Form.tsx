@@ -10,7 +10,7 @@ export type WeeklyLetterForm = {
 }
 
 const Form = () => {
-  const { setValues } = useMailHtml()
+  const { setValues, isLoading } = useMailHtml()
   const {
     handleSubmit,
     register,
@@ -24,8 +24,16 @@ const Form = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex-1 flex flex-col justify-between"
     >
-      <button className="btn btn-accent mb-10 w-full" type="submit">
-        <RiAiGenerate />
+      <button
+        className="btn btn-accent mb-10 w-full"
+        type="submit"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <span className="loading loading-spinner" />
+        ) : (
+          <RiAiGenerate />
+        )}
         Genereren
       </button>
       <div className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-y-5 gap-x-10">
