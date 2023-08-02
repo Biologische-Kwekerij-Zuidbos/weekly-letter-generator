@@ -22,8 +22,12 @@ const Form = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-between h-full"
+      className="flex-1 flex flex-col justify-between"
     >
+      <button className="btn btn-accent mb-10 w-full" type="submit">
+        <RiAiGenerate />
+        Genereren
+      </button>
       <div className="grid 2xl:grid-cols-2 xl:grid-cols-1 gap-y-5 gap-x-10">
         <div className="form-control">
           <label className="label">
@@ -95,10 +99,6 @@ const Form = () => {
           )}
         </div>
       </div>
-      <button className="btn btn-accent mt-10 w-full" type="submit">
-        <RiAiGenerate />
-        Genereren
-      </button>
     </form>
   )
 }

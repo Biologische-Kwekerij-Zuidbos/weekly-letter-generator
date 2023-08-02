@@ -34,7 +34,7 @@ function App() {
         >
           <CopyButton text={mailHtml} />
         </div>
-        <pre>{mailHtml}</pre>
+        <pre className="p-6">{mailHtml}</pre>
       </div>
     </div>
   )
